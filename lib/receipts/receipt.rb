@@ -3,7 +3,7 @@ require 'prawn/table'
 
 module Receipts
   class Receipt < Prawn::Document
-    attr_reader :attributes, :id, :company, :custom_font, :line_items, :logo, :message, :product, :subheading
+    attr_reader :attributes, :id, :company, :custom_font, :line_items, :logo, :message, :product, :subheading, :page_size
 
     def initialize(attributes)
       @attributes  = attributes
@@ -13,8 +13,9 @@ module Receipts
       @custom_font = attributes.fetch(:font, {})
       @message     = attributes.fetch(:message) { default_message }
       @subheading  = attributes.fetch(:subheading) { default_subheading }
+      @page_size   = attributes.fetch(:page_size) { 'A4' }
 
-      super(margin: 0)
+      super(margin: 0, page_size: @page_size)
 
       setup_fonts if custom_font.any?
       generate
